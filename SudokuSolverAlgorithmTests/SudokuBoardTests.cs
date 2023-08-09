@@ -34,7 +34,7 @@ namespace SudokuSolverAlgorithmTests
 
             var sudokuBoard = new SudokuBoard(board);
 
-            Assert.IsTrue(sudokuBoard.AreThereNewPartialSolutionSteps());
+            Assert.IsTrue(sudokuBoard.IsSolutionComplete());
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace SudokuSolverAlgorithmTests
 
             var sudokuBoard = new SudokuBoard(board);
 
-            Assert.IsFalse(sudokuBoard.AreThereNewPartialSolutionSteps());
+            Assert.IsFalse(sudokuBoard.IsSolutionComplete());
         }
 
         [Test]

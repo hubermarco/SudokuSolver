@@ -31,21 +31,46 @@ namespace SudokuSolverAlgorithm
     {
         public bool SolveSudoku(char [][] board)
         {
+            int index = 0;
+
             var sudokuBoard = new SudokuBoard(board);
 
-            return SolveSudoku(sudokuBoard);
+            return SolveSudoku(sudokuBoard, index);
         }
 
-        private bool SolveSudoku(SudokuBoard sudokuBoard)
+        private bool SolveSudoku(SudokuBoard sudokuBoard, int index)
         {
-            int index = 1; 
-
             while (sudokuBoard.AreThereNewPartialSolutionSteps())
             {
-                var nextNumber = index % 9;
+                var nextNumber = index % 9 + 1;
+                sudokuBoard.SelectNewPartialSolutionStep(nextNumber);
+                index++;
+
+                if (sudokuBoard.IsBoardValid())
+                {
+                    nextNumber = index % 9 + 1;
+                    sudokuBoard.ExtendSolutionByOneStep(nextNumber);
+                    index++;
+
+                    if (sudokuBoard.IsSolutionComplete())
+                    {
+                        if (SolveSudoku(sudokuBoard, index))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            sudokuBoard.SetBackLastStep();
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
             }
 
-            return true;
+            return false;
         }
     }
 }
