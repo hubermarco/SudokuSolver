@@ -42,38 +42,37 @@ namespace SudokuSolverAlgorithm
         {
             var numberSum = 0;
 
-            while (numberSum < 45)
+            while (AreThereNewPartialSolutionSteps(numberSum))
             {
-                var nextNumber = index % 9 + 1;
+                var nextNumber = CalculateNextNumber(index++);
                 sudokuBoard.SelectNewPartialSolutionStep(nextNumber);
                 numberSum += nextNumber;
-                index++;
-
+               
                 if (sudokuBoard.IsBoardValid())
                 {
-                    nextNumber = index % 9 + 1;
+                    nextNumber = CalculateNextNumber(index++);
                     sudokuBoard.ExtendSolutionByOneStep(nextNumber);
-                    index++;
-
+                  
                     if (sudokuBoard.IsSolutionComplete())
-                    {
                         if (SolveSudoku(sudokuBoard, index))
-                        {
                             return true;
-                        }
                         else
-                        {
                             sudokuBoard.SetBackLastStep();
-                        }
-                    }
                     else
-                    {
                         return true;
-                    }
                 }
             }
-
             return false;
+        }
+
+        private static int CalculateNextNumber(int index)
+        {
+            return index % 9 + 1; ;
+        }
+
+        private static bool AreThereNewPartialSolutionSteps(int numberSum)
+        {
+            return numberSum < 45;
         }
     }
 }
