@@ -8,7 +8,7 @@ namespace SudokuSolverAlgorithm
     public class SudokuBoard : List<List<char>>
     {
         private IList<Tuple<int, int>> _stack = new List<Tuple<int, int>>();
-
+      
         public SudokuBoard(char[][] board)
         {
             foreach (var row in board)
@@ -17,8 +17,7 @@ namespace SudokuSolverAlgorithm
 
         public bool AreThereNewPartialSolutionSteps()
         {
-            var areThereNewPartialSolutionSteps = this.Any(row => row.Any(element => element == '.'));
-            return areThereNewPartialSolutionSteps;
+            return false;
         }
 
         public bool IsSolutionComplete()
@@ -38,7 +37,7 @@ namespace SudokuSolverAlgorithm
 
         public void SelectNewPartialSolutionStep(int nextNumber)
         {
-            if(_stack.Count == 0)
+            if (_stack.Count == 0)
             {
                 ExtendSolutionByOneStep(nextNumber);
             }

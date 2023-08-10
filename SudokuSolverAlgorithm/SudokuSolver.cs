@@ -40,10 +40,13 @@ namespace SudokuSolverAlgorithm
 
         private bool SolveSudoku(SudokuBoard sudokuBoard, int index)
         {
-            while (sudokuBoard.AreThereNewPartialSolutionSteps())
+            var numberSum = 0;
+
+            while (numberSum < 45)
             {
                 var nextNumber = index % 9 + 1;
                 sudokuBoard.SelectNewPartialSolutionStep(nextNumber);
+                numberSum += nextNumber;
                 index++;
 
                 if (sudokuBoard.IsBoardValid())
