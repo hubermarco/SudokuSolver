@@ -85,7 +85,7 @@ namespace SudokuSolverAlgorithm
             rowIndex = 0;
             columnIndex = -1;
             for (; rowIndex < Count; rowIndex++)
-            {
+        {
                 columnIndex = this[rowIndex].FindIndex(element => element.Equals('.'));
 
                 if (columnIndex > -1)

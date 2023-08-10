@@ -49,10 +49,10 @@ namespace SudokuSolverAlgorithm
                 numberSum += nextNumber;
                
                 if (sudokuBoard.IsBoardValid())
-                {
+            {
                     nextNumber = CalculateNextNumber(index++);
                     sudokuBoard.ExtendSolutionByOneStep(nextNumber);
-                  
+
                     if (sudokuBoard.IsSolutionComplete())
                         if (SolveSudoku(sudokuBoard, index))
                             return true;
@@ -63,7 +63,7 @@ namespace SudokuSolverAlgorithm
                 }
             }
             return false;
-        }
+            }
 
         private static int CalculateNextNumber(int index)
         {
