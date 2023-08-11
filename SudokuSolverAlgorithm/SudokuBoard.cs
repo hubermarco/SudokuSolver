@@ -2,8 +2,8 @@
 {
     public class SudokuBoard
     {
-        private IList<Tuple<int, int>> _stackOfPartialSolutionCoordiantes = new List<Tuple<int, int>>();
-        private char[][] _board;
+        private readonly IList<Tuple<int, int>> _stackOfPartialSolutionCoordiantes = new List<Tuple<int, int>>();
+        private readonly char[][] _board;
         private int _trialCounter = 0;
 
 
