@@ -2,13 +2,17 @@
 {
     public class SudokuSolver
     {
-        public bool SolveSudoku(char [][] board)
+        public bool SolveSudoku(char [][] board, out int numberOfTrials)
         {
             int index = 0;
 
             var sudokuBoard = new SudokuBoard(board);
 
-            return SolveSudoku(sudokuBoard, index);
+            var sudokuSolved = SolveSudoku(sudokuBoard, index);
+
+            numberOfTrials = sudokuBoard.GetNumberOfTrials();
+
+            return sudokuSolved;
         }
 
         private bool SolveSudoku(SudokuBoard sudokuBoard, int index)

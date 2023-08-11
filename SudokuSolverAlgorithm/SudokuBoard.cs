@@ -2,8 +2,9 @@
 {
     public class SudokuBoard
     {
-        private IList<Tuple<int, int>> _stack = new List<Tuple<int, int>>();
+        private IList<Tuple<int, int>> _stackOfPartialSolutionCoordiantes = new List<Tuple<int, int>>();
         private char[][] _board;
+        private int _trialCounter = 0;
 
 
         public SudokuBoard(char[][] board)
@@ -24,21 +25,25 @@
             if((rowIndex != -1) && (columnIndex != -1))
             {
                 _board[rowIndex][columnIndex] = (char)(nextNumber + 48);
-                _stack.Add(new Tuple<int, int>(rowIndex, columnIndex));
+                _stackOfPartialSolutionCoordiantes.Add(new Tuple<int, int>(rowIndex, columnIndex));
+
+                _trialCounter++;
             }
         }
 
         public void SelectNewPartialSolutionStep(int nextNumber)
         {
-            if (_stack.Count == 0)
+            if (_stackOfPartialSolutionCoordiantes.Count == 0)
             {
                 ExtendSolutionByOneStep(nextNumber);
             }
             else
             {
-                var lastCoordinates = _stack.Last();
+                var lastCoordinates = _stackOfPartialSolutionCoordiantes.Last();
                 _board[lastCoordinates.Item1][lastCoordinates.Item2] = (char)(nextNumber + 48);
             }
+
+            _trialCounter++;
         }
 
         public bool IsBoardValid()
@@ -75,17 +80,22 @@
 
         public void SetBackLastStep()
         {
-            var lastCoordinates = _stack.Last();
+            var lastCoordinates = _stackOfPartialSolutionCoordiantes.Last();
             _board[lastCoordinates.Item1][lastCoordinates.Item2] = '.';
 
-            _stack.Remove(lastCoordinates);
+            _stackOfPartialSolutionCoordiantes.Remove(lastCoordinates);
+        }
+
+        public int GetNumberOfTrials()
+        {
+            return _trialCounter;
         }
 
         private void GetRowAndColumnIndexOfNextFreeElement(out int rowIndex, out int columnIndex)
         {
             rowIndex = 0;
             columnIndex = -1;
-            for (; rowIndex < _board.Count(); rowIndex++)
+            for (; rowIndex < _board.Length; rowIndex++)
         {
                 columnIndex = _board[rowIndex].ToList().FindIndex(element => element.Equals('.'));
 
