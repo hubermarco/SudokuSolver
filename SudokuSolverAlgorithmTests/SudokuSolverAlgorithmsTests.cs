@@ -40,10 +40,10 @@ namespace SudokuSolverAlgorithmTests
                new char[] {'3','4','5','2','8','6','1','7','9'}
             };
 
-            var isSudokoSolved = new SudokuSolver().SolveSudoku(board, out var numberOfTrials);
+            var isSudokuSolved = new SudokuSolver().SolveSudoku(board, out var numberOfTrials);
 
             Console.WriteLine($"NumberOfTrials: {numberOfTrials}");
-            Assert.IsTrue(isSudokoSolved, "IsSudokoSolved");
+            Assert.IsTrue(isSudokuSolved, "IsSudokoSolved");
             CollectionAssert.AreEqual(boardSolution, board, "Solution is not as expected!");
         }
     }
