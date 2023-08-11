@@ -49,11 +49,11 @@ namespace SudokuSolverAlgorithm
                 numberSum += nextNumber;
                
                 if (sudokuBoard.IsBoardValid())
-            {
+                {
                     nextNumber = CalculateNextNumber(index++);
                     sudokuBoard.ExtendSolutionByOneStep(nextNumber);
 
-                    if (sudokuBoard.IsSolutionComplete())
+                    if (!sudokuBoard.IsSolutionComplete())
                         if (SolveSudoku(sudokuBoard, index))
                             return true;
                         else
