@@ -19,10 +19,8 @@
         }
 
         public void ExtendSolutionByOneStep(int nextNumber)
-        {
-            GetRowAndColumnIndexOfNextFreeElement(out var rowIndex, out var columnIndex);
-            
-            if((rowIndex != -1) && (columnIndex != -1))
+        {   
+            if(GetRowAndColumnIndexOfNextFreeElement(out var rowIndex, out var columnIndex))
             {
                 _board[rowIndex][columnIndex] = (char)(nextNumber + 48);
                 _stackOfPartialSolutionCoordiantes.Add(new Tuple<int, int>(rowIndex, columnIndex));
@@ -91,7 +89,7 @@
             return _trialCounter;
         }
 
-        private void GetRowAndColumnIndexOfNextFreeElement(out int rowIndex, out int columnIndex)
+        private bool GetRowAndColumnIndexOfNextFreeElement(out int rowIndex, out int columnIndex)
         {
             rowIndex = 0;
             columnIndex = -1;
@@ -100,8 +98,10 @@
                 columnIndex = _board[rowIndex].ToList().FindIndex(element => element.Equals('.'));
 
                 if (columnIndex > -1)
-                    return;
+                    break;
             }
+
+            return (rowIndex != -1) && (columnIndex != -1);
         }
 
         private bool IsBoardComplelyFilled()
