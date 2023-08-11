@@ -1,18 +1,14 @@
-﻿
-
-using System.Data.Common;
-using System.Linq;
-
-namespace SudokuSolverAlgorithm
+﻿namespace SudokuSolverAlgorithm
 {
-    public class SudokuBoard : List<List<char>>
+    public class SudokuBoard
     {
         private IList<Tuple<int, int>> _stack = new List<Tuple<int, int>>();
-      
+        private char[][] _board;
+
+
         public SudokuBoard(char[][] board)
         {
-            foreach (var row in board)
-                Add(row.ToList());
+            _board = board;
         }
 
         public bool IsSolutionComplete()
@@ -27,7 +23,7 @@ namespace SudokuSolverAlgorithm
             
             if((rowIndex != -1) && (columnIndex != -1))
             {
-                this[rowIndex][columnIndex] = (char)(nextNumber + 48);
+                _board[rowIndex][columnIndex] = (char)(nextNumber + 48);
                 _stack.Add(new Tuple<int, int>(rowIndex, columnIndex));
             }
         }
@@ -41,18 +37,18 @@ namespace SudokuSolverAlgorithm
             else
             {
                 var lastCoordinates = _stack.Last();
-                this[lastCoordinates.Item1][lastCoordinates.Item2] = (char)(nextNumber + 48);
+                _board[lastCoordinates.Item1][lastCoordinates.Item2] = (char)(nextNumber + 48);
             }
         }
 
         public bool IsBoardValid()
         { 
             bool AreAllRowsValid() => Enumerable.Range(0, 9).All(
-                row => Enumerable.Range(1, 9).All(value => this[row].Count(x => x == value + 48) <= 1));
+                row => Enumerable.Range(1, 9).All(value => _board[row].Count(x => x == value + 48) <= 1));
 
             bool AreAllColumnsValid()
             {
-                var transposedBoard = Enumerable.Range(0, 9).Select(column => Enumerable.Range(0, 9).Select(row => this[row][column]).ToArray()).ToArray();
+                var transposedBoard = Enumerable.Range(0, 9).Select(column => Enumerable.Range(0, 9).Select(row => _board[row][column]).ToArray()).ToArray();
                 var areAllColumnsValid = Enumerable.Range(0, 9).All(
                     row => Enumerable.Range(1, 9).All(value => transposedBoard[row].Count(x => x == value + 48) <= 1));
                 return areAllColumnsValid;
@@ -69,7 +65,7 @@ namespace SudokuSolverAlgorithm
                 }
 
                 var areAllSegmentsValid =
-                    indexMatrix.All(row => Enumerable.Range(1, 9).All(value => row.Select(x => this[(x / 9)][x % 9]).Count(x => x == value + 48) <= 1));
+                    indexMatrix.All(row => Enumerable.Range(1, 9).All(value => row.Select(x => _board[(x / 9)][x % 9]).Count(x => x == value + 48) <= 1));
 
                 return areAllSegmentsValid;
             }
@@ -80,7 +76,7 @@ namespace SudokuSolverAlgorithm
         public void SetBackLastStep()
         {
             var lastCoordinates = _stack.Last();
-            this[lastCoordinates.Item1][lastCoordinates.Item2] = '.';
+            _board[lastCoordinates.Item1][lastCoordinates.Item2] = '.';
 
             _stack.Remove(lastCoordinates);
         }
@@ -89,9 +85,9 @@ namespace SudokuSolverAlgorithm
         {
             rowIndex = 0;
             columnIndex = -1;
-            for (; rowIndex < Count; rowIndex++)
+            for (; rowIndex < _board.Count(); rowIndex++)
         {
-                columnIndex = this[rowIndex].FindIndex(element => element.Equals('.'));
+                columnIndex = _board[rowIndex].ToList().FindIndex(element => element.Equals('.'));
 
                 if (columnIndex > -1)
                     return;
@@ -100,7 +96,7 @@ namespace SudokuSolverAlgorithm
 
         private bool IsBoardComplelyFilled()
         {
-            var isBoardComplelyFilled = !this.Any(row => row.Any(element => element == '.'));
+            var isBoardComplelyFilled = !_board.Any(row => row.Any(element => element == '.'));
             return isBoardComplelyFilled;
         }
     }
